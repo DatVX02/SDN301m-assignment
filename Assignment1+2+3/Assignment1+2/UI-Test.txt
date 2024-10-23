@@ -1,0 +1,17 @@
+#Add data
+    - node seedData.js
+    
+#login
+    - http://localhost:9999/dashboard/auth/login
+
+#register
+    
+
+#CRUD categories (authen)
+    - http://localhost:9999/dashboard/categories
+
+#get all products 
+    - http://localhost:9999/dashboard/products
+
+#CRUD products (authen)
+    - http://localhost:9999/dashboard/products

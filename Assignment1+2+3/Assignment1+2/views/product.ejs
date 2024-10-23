@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Products</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+
+<body class="bg-gray-100">
+    <div class="container mx-auto p-6 bg-white rounded-lg shadow-md">
+        <header class="flex justify-between items-center mb-6">
+            <h1 class="text-4xl font-bold text-gray-800">Manage Products</h1>
+            <div class="flex space-x-2">
+                <a href="/dashboard/categories"
+                    class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition">Go to
+                    Categories</a>
+                <form action="/dashboard/auth/logout" method="post" class="inline">
+                    <button type="submit"
+                        class="bg-red-500 text-white px-4 py-2 rounded-lg shadow hover:bg-red-600 transition">Logout</button>
+                </form>
+            </div>
+        </header>
+
+        <button id="toggleFormButton"
+            class="bg-green-500 text-white px-4 py-2 rounded-lg mb-4 hover:bg-green-600 transition">Add/Edit
+            Product</button>
+
+        <!-- Product Form -->
+        <form id="productForm" method="post" class="mb-8 hidden">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Product Details</h2>
+            <input type="hidden" name="_method" id="method" value="POST"> <!-- Initially POST for new product -->
+            <input type="hidden" name="productId" id="productId"> <!-- This will hold the product ID for editing -->
+
+            <!-- Product Name Input -->
+            <div class="mb-4">
+                <label for="name" class="block text-gray-700 font-medium mb-2">Product Name:</label>
+                <input type="text" name="name" id="name"
+                    class="border border-gray-300 rounded-lg w-full py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                    required>
+            </div>
+
+            <!-- Price Input -->
+            <div class="mb-4">
+                <label for="price" class="block text-gray-700 font-medium mb-2">Price:</label>
+                <div class="relative">
+                    <input type="number" name="price" id="price"
+                        class="border border-gray-300 rounded-lg w-full py-3 px-4 pr-16 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                        min="0" required>
+                    <span class="absolute inset-y-0 right-4 flex items-center text-gray-500">VNĐ</span>
+                </div>
+            </div>
+
+
+
+            <!-- Description Input -->
+            <div class="mb-4">
+                <label for="description" class="block text-gray-700 font-medium mb-2">Description:</label>
+                <textarea name="description" id="description" rows="4"
+                    class="border border-gray-300 rounded-lg w-full py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                    required></textarea>
+            </div>
+
+            <!-- Category Selection -->
+            <div class="mb-4">
+                <label for="categoryId" class="block text-gray-700 font-medium mb-2">Category:</label>
+                <select name="categoryId" id="categoryId"
+                    class="border border-gray-300 rounded-lg w-full py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                    required>
+                    <% categories.forEach(category=> { %>
+                        <option value="<%= category._id %>">
+                            <%= category.name %>
+                        </option>
+                        <% }) %>
+                </select>
+            </div>
+
+            <!-- Save Button -->
+            <button type="submit"
+                class="bg-green-500 text-white px-4 py-2 rounded-lg shadow hover:bg-green-600 transition">Save
+                Changes</button>
+        </form>
+
+        <!-- Product Table -->
+        <table class="min-w-full bg-white border rounded-lg shadow-md">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="py-3 px-4 border-b text-left text-gray-700">Name</th>
+                    <th class="py-3 px-4 border-b text-left text-gray-700">Price</th>
+                    <th class="py-3 px-4 border-b text-left text-gray-700">Description</th>
+                    <th class="py-3 px-4 border-b text-left text-gray-700">Category</th>
+                    <th class="py-3 px-4 border-b text-left text-gray-700">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% products.forEach(product=> { %>
+                    <tr class="hover:bg-gray-100 transition">
+                        <td class="border-b px-4 py-2">
+                            <%= product.name %>
+                        </td>
+                        <td class="border-b px-4 py-2">
+                            <%= product.price %> VNĐ
+                        </td>
+                        <td class="border-b px-4 py-2">
+                            <%= product.description %>
+                        </td>
+                        <td class="border-b px-4 py-2">
+                            <%= product.categoryId ? product.categoryId.name : 'Unknown' %>
+                        </td>
+                        <td class="border-b px-4 py-2">
+                            <button
+                                onclick="editProduct('<%= product._id %>', '<%= product.name %>', '<%= product.price %>', '<%= product.description %>', '<%= product.categoryId ? product.categoryId._id : '' %>')"
+                                class="bg-blue-500 text-white px-2 py-1 rounded-lg shadow hover:bg-blue-600 transition">Edit</button>
+                            <form action="/dashboard/products/<%= product._id %>?_method=DELETE" method="post"
+                                class="inline" onsubmit="return confirmDelete();">
+                                <button type="submit"
+                                    class="bg-red-500 text-white px-2 py-1 rounded-lg shadow hover:bg-red-600 transition">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const form = document.getElementById('productForm');
+        const toggleButton = document.getElementById('toggleFormButton');
+
+        toggleButton.addEventListener('click', () => {
+            form.classList.toggle('hidden');
+            toggleButton.textContent = form.classList.contains('hidden') ? 'Add/Edit Product' : 'Hide Form';
+        });
+
+        function editProduct(id, name, price, description, categoryId) {
+            document.getElementById('productId').value = id;
+            document.getElementById('name').value = name;
+            document.getElementById('price').value = price;
+            document.getElementById('description').value = description;
+            document.getElementById('categoryId').value = categoryId;
+            document.getElementById('method').value = 'PUT';
+            form.action = `/dashboard/products/${id}?_method=PUT`;
+            form.classList.remove('hidden');
+        }
+
+        document.getElementById('productForm').addEventListener('submit', function (event) {
+            const priceInput = document.getElementById('price').value;
+
+            if (priceInput < 0) {
+                alert('Price cannot be negative. Please enter a valid amount.');
+                event.preventDefault();
+            }
+        });
+
+        function confirmDelete() {
+            return confirm('Are you sure you want to delete this product?');
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+<%- include('partials/header') %>
+<h2>Manage Categories</h2>
+
+<form action="/dashboard/categories" method="POST">
+    <input type="text" name="name" placeholder="Category Name" required>
+    <input type="text" name="description" placeholder="Description">
+    <button type="submit">Add Category</button>
+</form>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Actions</th>
+    </tr>
+    <% categories.forEach(category => { %>
+    <tr>
+        <td><%= category.name %></td>
+        <td><%= category.description %></td>
+        <td>
+            <form action="/dashboard/categories/delete/<%= category._id %>" method="POST" onsubmit="return confirm('Are you sure you want to delete this category?');">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    <% }) %>
+</table>
+<%- include('partials/footer') %>

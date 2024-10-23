@@ -1,0 +1,87 @@
+## Install Dependencies
+    - npm i
+
+## Run seedData.js to create initial data
+    - node seedData.js
+    
+## Run server.js to start the server
+    - node server.js
+
+
+## Test Cases for API (localhost:9999)
+
+## Auth
+
+#### POST Register
+POST http://localhost:9999/auth/register
+
+#### POST Login
+POST http://localhost:9999/auth/login
+
+### Categories
+
+#### GET All Categories
+GET http://localhost:9999/categories
+
+
+#### GET Category by ID
+GET http://localhost:9999/categories/664f05a958d8cdf22fa626b7
+
+
+#### POST New Category
+POST http://localhost:9999/categories
+
+{
+"name": "New Category",
+"description": "Description for new category"
+}
+
+
+#### PUT Update Category by ID
+PUT http://localhost:9999/categories/664f05a958d8cdf22fa626b7
+
+{
+"name": "Updated Category Name",
+"description": "Updated description for category"
+}
+
+
+#### DELETE Category by ID
+DELETE http://localhost:9999/categories/664f05a958d8cdf22fa626b7
+
+
+
+### Products
+
+#### GET All Products
+GET http://localhost:9999/products
+
+
+#### GET Product by ID
+GET http://localhost:9999/products/664f05a958d8cdf22fa626c1
+
+
+#### POST New Product
+POST http://localhost:9999/products
+
+{
+"name": "New Product added!",
+"price": 9999,
+"description": "Description for new product",
+"categoryId": "664f05a958d8cdf22fa626b7"
+}
+
+
+#### PUT Update Product by ID
+PUT http://localhost:9999/products/664f05a958d8cdf22fa626c1
+
+{
+"name": "Updated Product Name",
+"price": 175,
+"description": "Updated description for product",
+"categoryId": "664f05a958d8cdf22fa626b7"
+}
+
+
+#### DELETE Product by ID
+DELETE http://localhost:9999/products/664f05a958d8cdf22fa626c1

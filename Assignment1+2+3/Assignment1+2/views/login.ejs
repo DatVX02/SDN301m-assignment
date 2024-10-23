@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+<body class="bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-md bg-white shadow-lg rounded-lg p-10">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-6">Welcome Back!</h1>
+        <% if (error) { %>
+            <p class="text-red-500 text-center mb-4"><%= error %></p>
+        <% } %>
+        <form action="/dashboard/auth/login" method="post">
+            <div class="mb-6">
+                <label for="username" class="block text-gray-700 text-sm font-semibold mb-2">Username:</label>
+                <input type="text" name="username" id="username" class="shadow-sm border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200" required>
+            </div>
+            <div class="mb-6">
+                <label for="password" class="block text-gray-700 text-sm font-semibold mb-2">Password:</label>
+                <input type="password" name="password" id="password" class="shadow-sm border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 mb-3 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200" required>
+            </div>
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <a href="#" class="text-blue-500 hover:text-blue-700 text-sm">Forgot Password?</a>
+                </div>
+            </div>
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">Login</button>
+        </form>
+        <div class="mt-6 text-center">
+            <p class="text-gray-600 text-sm">Don't have an account? <a href="/dashboard/auth/register" class="text-blue-600 hover:text-blue-700 font-semibold">Sign Up</a></p>
+        </div>
+    </div>
+</body>
+</html>

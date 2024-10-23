@@ -1,0 +1,12 @@
+#API
+POST /api/products
+GET /api/products
+GET /api/products/:id
+PUT /api/products/:id
+DELETE /api/products/:id
+
+{
+  "name": "Smartphone",
+  "price": 999,
+  "category": "{id_category}"
+}

@@ -1,0 +1,11 @@
+{
+    "name": "Electronics",
+    "description": "All kinds of electronic devices"
+}
+
+#API:
+POST /api/categories
+GET /api/categories
+GET /api/categories/:id 
+PUT /api/categories/:id
+DELETE /api/categories/:id
